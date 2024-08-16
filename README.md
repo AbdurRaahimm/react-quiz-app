@@ -1,10 +1,12 @@
-# React Vite Tailwind Project
-This is a template for a React project with Vite and Tailwind CSS.
+# React Quiz App  
+
+A simple quiz app made with React, Vite, and Tailwind CSS. 
+
 
 ## Usage
 1. Clone this repository
 ```bash
-git clone https://github.com/AbdurRaahimm/react-vite-tailwind-starter.git
+git clone https://github.com/AbdurRaahimm/react-quiz-app.git
 ```
 2. Run The Essential Dependency
 ```bash
@@ -18,17 +20,13 @@ npm run dev
 ```bash
 npm run build
 ```
-5. Run `npm run serve` to serve the build
-```bash
-npm run serve
-```
 
-## Features
+
+## Tools
 - React
 - Vite
 - Tailwind CSS
-- ESLint
-- Prettier
+
 
 
 ## Connect on Social Media
