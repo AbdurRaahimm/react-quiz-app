@@ -1,41 +1,22 @@
-import { useState } from 'react'
-import reactLogo from '/react.svg'
-import viteLogo from '/vite.svg'
-import tailwindLogo from '/tailwindLogo.png'
-import './App.css'
+import Footer from './components/Footer'
+import Modal from './components/Modal'
+import ReactLogo from '/react.svg'
 
-function App() {
-  const [count, setCount] = useState(0)
-  console.log(count); 
+export default function App() {
   return (
-    <div className=''>
-      <div className='flex justify-center'>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo " alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react " alt="React logo" />
-        </a>
-        <a href="https://tailwindcss.com/docs" target="_blank">
-          <img src={tailwindLogo} className="logo react" alt="React logo" />
-        </a>
+    <section className="bg-gradient-to-r from-pink-500 to-rose-500 h-screen flex  flex-col justify-center items-center">
+      <img src={ReactLogo} alt="React Logo" className=" animate-spin hover:animate-none duration-700 w-32 h-32 cursor-pointer "  />
+      {/* <img src={ReactLogo} alt="ReactLogo" className='animate-spin w-24 ' /> */}
+      <div className="flex flex-col items-center justify-between space-y-3">
+        <h1 className="text-5xl font-bold text-white"> React Quiz App </h1>
+        <p className='text-white text-xl'> Welcome to The React Quiz App! </p>
       </div>
-      <h1 className="text-3xl font-bold text-green-500">Vite + React + Tailwind</h1>
-      <div className="card">
-        <button className='border-4 bg-indigo-500  focus:outline-none' onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p className='text-gray-900 py-2'>
-        <a className='text-green-500 capitalize' href="https://www.showwcase.com/abdurrahim" target="_blank">
-         created Starter by @Sayed Abdur Rahim
-        </a>
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite, React and Tailwind logos to learn more
-      </p>
-    </div>
+
+      <button popovertarget="quiz" className="bg-white text-rose-500 px-5 py-2 rounded-lg mt-5 font-bold hover:bg-rose-500 hover:text-white"> Get Started </button>
+
+      <Modal />
+
+      <Footer />
+    </section>
   )
 }
-
-export default App
