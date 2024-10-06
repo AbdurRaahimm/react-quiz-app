@@ -1,53 +1,85 @@
-import ReactQuiz from './data/react-quiz.json';
+// Desc: This file contains the Questions component which is used to display the questions and options to the user.
 
-console.log(ReactQuiz)
+import { useQuestion } from "../store/QuestionProvider";
 
-export default function Questions() {
+export default function Questions({ question, handleAnswerChange, isCorrectAnswer, isSelectedAnswer, handleDoneClick }) {
+    const { state, dispatch } = useQuestion();
+    const { questions, secondsRemaining, answer, index, points } = state;
     return (
-        <div className="flex flex-col space-y-2">
-            <div className="flex items-center space-x-3">
-                <label
-                    htmlFor="option1"
-                    after=" &#10003;"
-                    className=" has-[:checked]:after:content-[attr(after)] has-[:checked]:bg-green-200 has-[:checked]:text-green-900 has-[:checked]:ring-indigo-200 px-3 py-1 font-bold w-full rounded-md  border border-green-400 text-black flex justify-between cursor-pointer hover:bg-green-100">
-                    Dhaka
-                    <input type="radio" name='answer' id='option1' className='hidden' />
-                </label>
+        <>
+            <div className="flex justify-between">
+                <p className="font-bold text-lg  ">Quiz Application</p>
+                <p className="bg-rose-500 text-white p-1 rounded-md font-semibold select-none">
+                    Time Left  :
+                    <span className="bg-black text-white font-bold py-[2px] px-2 rounded-md">
+                        {secondsRemaining}
+                    </span>
+                </p>
+            </div>
+            <progress value={index + 1} max={questions.length} className="w-full h-2 quizProgress" />
+
+            <div className="flex justify-between">
+                <p className="font-semibold text-lg">Question {index + 1} / {questions.length}</p>
+                <p className="font-semibold">{points} / {questions.reduce((acc, question) => acc + question.points, 0)}</p>
             </div>
 
-            <div className="flex items-center space-x-3">
-                <label
-                    htmlFor="option2"
-                    after=" &#10003;"
-                    className=" has-[:checked]:after:content-[attr(after)] has-[:checked]:bg-green-200 has-[:checked]:text-green-900 has-[:checked]:ring-indigo-200 px-3 py-1 font-bold w-full rounded-md  border border-green-400 text-black flex justify-between cursor-pointer hover:bg-green-100">
-                    Dhaka
-                    <input type="radio" name='answer' id='option2' className='hidden' />
-                </label>
+            <div className="flex flex-col space-y-3">
+                <p className="text-lg font-semibold capitalize">
+                    {index + 1}. {question?.question}
+                </p>
+                <div className="flex flex-col space-y-2">
+                    {question?.options.map((option, i) => (
+                        <div className="flex items-center space-x-3" key={i}>
+                            <label
+                                htmlFor={`option${i}`}
+                                className={`px-3 py-1 font-bold w-full rounded-md border ${isSelectedAnswer(option)
+                                    ? isCorrectAnswer(i)
+                                        ? "border-green-500 bg-green-100"
+                                        : "border-red-500 bg-red-100"
+                                    : "border-gray-400 hover:bg-gray-100"
+                                    } text-black flex justify-between cursor-pointer`}
+                            >
+                                {option}
+                                <span>
+                                    {
+                                        isSelectedAnswer(option) &&
+                                        (isCorrectAnswer(i) ? "✓" : "✕")
+                                    }
+                                </span>
+                                <input
+                                    type="radio"
+                                    name="answer"
+                                    id={`option${i}`}
+                                    className="hidden"
+                                    value={option}
+                                    checked={isSelectedAnswer(option)}
+                                    onChange={() => handleAnswerChange(option)}
+                                    disabled={!!answer} // Disable if an answer is already selected
+                                />
+                            </label>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <div className="flex items-center space-x-3">
-                <label
-                    htmlFor="option3"
-                    after=" &times;"
-                    className=" has-[:checked]:after:content-[attr(after)] has-[:checked]:bg-red-200 has-[:checked]:text-red-900 has-[:checked]:ring-red-200 px-3 py-1 font-bold w-full rounded-md  border border-green-400 has-[:checked]:border-red-500 text-black flex justify-between cursor-pointer hover:bg-green-100 ">
-                    Dhaka
-                    <input type="radio" name='answer' id='option3' className='hidden' />
-                </label>
+            <div className="flex justify-end mt-3">
+                {index + 1 === questions.length ? (
+                    <button
+                        className="bg-rose-500 text-white px-3 py-2 rounded-md font-semibold hover:bg-rose-700"
+                        onClick={handleDoneClick} // Show results when done is clicked
+                    >
+                        Done
+                    </button>
+                ) : (
+                    <button
+                        className="bg-rose-500 text-white px-3 py-2 rounded-md font-semibold hover:bg-rose-700"
+                        onClick={() => dispatch({ type: "next_question" })}
+                    >
+                        Next Question
+                    </button>
+                )}
             </div>
+        </>
 
-            <div className="flex items-center space-x-3">
-                <label
-                    htmlFor="option4"
-                    after=" &#10003;"
-                    className=" has-[:checked]:after:content-[attr(after)] has-[:checked]:bg-green-200 has-[:checked]:text-green-900 has-[:checked]:ring-indigo-200 px-3 py-1 font-bold w-full rounded-md  border border-green-400 text-black flex justify-between cursor-pointer hover:bg-green-100">
-                    Dhaka
-                    <input type="radio" name='answer' id='option4' className='hidden' />
-                </label>
-            </div>
-
-
-
-
-        </div>
     )
 }

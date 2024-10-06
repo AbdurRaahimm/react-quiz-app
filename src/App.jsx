@@ -1,22 +1,84 @@
-import Footer from './components/Footer'
-import Modal from './components/Modal'
-import ReactLogo from '/react.svg'
+import { useEffect } from 'react';
+import Footer from './components/Footer';
+import Result from './components/Result';
+import { useQuestion } from './store/QuestionProvider';
+import ReactLogo from '/react.svg';
+import Questions from './components/Questions';
 
 export default function App() {
+  const { state, dispatch } = useQuestion();
+  const { questions, status, index, answer,  secondsRemaining } = state;
+  const question = questions[index]; // Get the current question
+
+  // Timer Effect
+  useEffect(() => {
+    if (status === "active" && secondsRemaining > 0) {
+      const timerId = setInterval(() => {
+        dispatch({ type: "tick" });
+      }, 1000);
+      return () => clearInterval(timerId);
+    } else if (secondsRemaining === 0) {
+      dispatch({ type: "finished" }); // Automatically show results when time is up
+    }
+  }, [status, secondsRemaining]);
+
+  const handleAnswerChange = (option) => {
+    dispatch({ type: "new_answer", payload: option });
+  };
+
+  const isCorrectAnswer = (option) => option === question.correctOption;
+  const isSelectedAnswer = (option) => answer === option;
+
+  const handleDoneClick = () => {
+    dispatch({ type: "finished" }); // Show results when "Done" is clicked
+  };
+
   return (
-    <section className="bg-gradient-to-r from-pink-500 to-rose-500 h-screen flex  flex-col justify-center items-center">
-      <img src={ReactLogo} alt="React Logo" className=" animate-spin hover:animate-none duration-700 w-32 h-32 cursor-pointer "  />
-      {/* <img src={ReactLogo} alt="ReactLogo" className='animate-spin w-24 ' /> */}
+    <section className="bg-gradient-to-r from-pink-500 to-rose-500 h-screen flex flex-col justify-center items-center">
+      <img
+        src={ReactLogo}
+        alt="React Logo"
+        className="animate-spin hover:animate-none transition-all  w-32 h-32 cursor-pointer"
+      />
+
       <div className="flex flex-col items-center justify-between space-y-3">
-        <h1 className="text-5xl font-bold text-white"> React Quiz App </h1>
-        <p className='text-white text-xl'> Welcome to The React Quiz App! </p>
+        <h1 className="text-5xl font-bold text-white">React Quiz App</h1>
+        <p className="text-white text-xl">Welcome to The React Quiz App!</p>
       </div>
 
-      <button popovertarget="quiz" className="bg-white text-rose-500 px-5 py-2 rounded-lg mt-5 font-bold hover:bg-rose-500 hover:text-white"> Get Started </button>
+      <button
+        popovertarget="quiz"
+        className="bg-white text-rose-500 px-5 py-2 rounded-lg mt-5 font-bold hover:bg-rose-500 hover:text-white"
+        onClick={() => dispatch({ type: "start" })}
+      >
+        Get Started
+      </button>
 
-      <Modal />
+      {status === "active" && (
+        <div id="quiz" popover="true" className="rounded-md sm:w-6/12 md:w-7/12 pb-3 px-3 py-5">
+          {/* if status is loading show loading otherwise show questions */} 
+          {
+            status === "loading" ? (
+              <div className="flex justify-center items-center space-x-2">
+                <div className="h-3 w-3 bg-rose-500 rounded-full animate-bounce"></div>
+                <div className="h-3 w-3 bg-rose-500 rounded-full animate-bounce"></div>
+                <div className="h-3 w-3 bg-rose-500 rounded-full animate-bounce"></div>
+              </div>
+            ) : (
+              <Questions {...{ question, handleAnswerChange, isCorrectAnswer, isSelectedAnswer, handleDoneClick }} />
+            )
+          }
+         
+        </div>
+      )}
+
+      {status === "finished" && (
+        <div className='w-full bg-white sm:w-8/12 rounded-md py-20 absolute top-40 space-y-2'>
+          <Result />
+        </div>
+      )}
 
       <Footer />
     </section>
-  )
+  );
 }
