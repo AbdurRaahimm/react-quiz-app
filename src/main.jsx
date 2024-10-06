@@ -1,13 +1,14 @@
-import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import App from './App'
 import './index.css'
 import QuestionProvider from './store/QuestionProvider'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <Suspense fallback={<h2>Looading...</h2>}>
+
+
+ReactDOM.createRoot(document.getElementById('app')).render(
+  <>
     <QuestionProvider>
       <App />
     </QuestionProvider>
-  </Suspense>
+  </>
 )

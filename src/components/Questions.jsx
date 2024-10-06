@@ -7,8 +7,17 @@ export default function Questions({ question, handleAnswerChange, isCorrectAnswe
     const { questions, secondsRemaining, answer, index, points } = state;
     return (
         <>
-            <div className="flex justify-between">
-                <p className="font-bold text-lg  ">Quiz Application</p>
+            <button
+                className="bg-rose-500 text-white px-2 float-right rounded-md font-semibold hover:bg-rose-700"
+                onClick={() => dispatch({ type: "restart" })}
+            >
+                &times;
+            </button>
+            <div className="flex justify-between py-8">
+                <div className="flex items-center">
+                    <img src="/react.svg" alt="React Logo" className="size-8 animate-spin hover:animate-none transition-all cursor-pointer" />
+                    <p className="font-bold text-lg  ">Quiz Application</p>
+                </div>
                 <p className="bg-rose-500 text-white p-1 rounded-md font-semibold select-none">
                     Time Left  :
                     <span className="bg-black text-white font-bold py-[2px] px-2 rounded-md">
