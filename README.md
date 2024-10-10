@@ -22,10 +22,29 @@ npm run build
 ```
 
 
+## Features 
+- Questions with multiple options 
+- Timer for each question
+- Scrolling through questions
+- Points system
+- Save High score in local storage
+- Reset game
+
+
 ## Tools
 - React
 - Vite
 - Tailwind CSS
+
+## Live Demo
+[React Quiz App](https://reactjs-quuiz.netlify.app/)
+
+## Screenshots
+![React Quiz App](/public/Screenshots/image.png)
+![Questions](/public/Screenshots/image-1.png)
+![Correct](/public/Screenshots/image-2.png)
+![wrong](/public/Screenshots/image-3.png)
+![Result](/public/Screenshots/image-4.png)
 
 
 
